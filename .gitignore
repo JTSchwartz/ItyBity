@@ -1,0 +1,11 @@
+# local env files
+.env
+.env.local
+.env.*.local
+
+# Log files
+/client/.idea
+/client/node_modules
+/client/dist
+/client/npm-debug.log*
+
