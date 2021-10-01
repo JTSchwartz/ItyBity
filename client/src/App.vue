@@ -254,7 +254,6 @@
 					this.setInfo("Slug is not valid", "error")
 					return
 				}
-				
 				this.apiRequest("change", {
 						"full":   this.change.dest,
 						"secret": this.change.secret,
@@ -290,7 +289,7 @@
 						} else {
 							this.setInfo(data.err, "error")
 						}
-					})
+					}).catch(err => console.log(`Error: ${err}`))
 			},
 			removeLink:            function () {
 				if (this.failsSlugVerification(this.remove.slug)) {

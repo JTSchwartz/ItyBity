@@ -58,21 +58,21 @@ func change(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&api)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		JSONResponse(w, Err{Msg: "Error occurred while removing slug"}, http.StatusBadRequest)
 		return
 	}
 
 	exists := slugExists(api.Slug)
 	if !exists {
-		log.Print("Slug not found")
+		log.Println("Slug not found")
 		JSONResponse(w, Err{Msg: "Slug not found"}, http.StatusBadRequest)
 		return
 	}
 
 	matches, err := secretMatchesSlug(api.Secret, api.Slug)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		JSONResponse(w, Err{Msg: "Error occurred while matching secret to slug"}, http.StatusBadRequest)
 		return
 	}
@@ -84,7 +84,7 @@ func change(w http.ResponseWriter, r *http.Request) {
 
 	err = updateDestination(api.Full, api.Slug)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		JSONResponse(w, Err{Msg: "Error occurred attempting to change destination"}, http.StatusBadRequest)
 		return
 	}
@@ -93,6 +93,7 @@ func change(w http.ResponseWriter, r *http.Request) {
 }
 
 func create(w http.ResponseWriter, r *http.Request) {
+	log.Println("Entering creation")
 	var api Api
 
 	err := json.NewDecoder(r.Body).Decode(&api)
@@ -105,7 +106,7 @@ func create(w http.ResponseWriter, r *http.Request) {
 		exists := slugExists(api.Slug)
 
 		if exists {
-			log.Print("Slug already exists")
+			log.Println("Slug already exists")
 			JSONResponse(w, Err{Msg: "Slug already exists"}, http.StatusBadRequest)
 			return
 		}
@@ -122,7 +123,7 @@ func create(w http.ResponseWriter, r *http.Request) {
 
 	err = createShortUrl(api)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		JSONResponse(w, Err{Msg: "Error occurred while creating short url"}, http.StatusBadRequest)
 		return
 	}
@@ -135,34 +136,34 @@ func remove(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&api)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		JSONResponse(w, Err{Msg: "Error occurred while removing slug"}, http.StatusBadRequest)
 		return
 	}
 
 	exists := slugExists(api.Slug)
 	if !exists {
-		log.Print("Slug not found")
+		log.Println("Slug not found")
 		JSONResponse(w, Err{Msg: "Slug not found"}, http.StatusBadRequest)
 		return
 	}
 
 	matches, err := secretMatchesSlug(api.Secret, api.Slug)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		JSONResponse(w, Err{Msg: "Error occurred while matching secret to slug"}, http.StatusBadRequest)
 		return
 	}
 
 	if !matches {
-		log.Print("Secret and slug does not exist")
+		log.Println("Secret and slug does not exist")
 		JSONResponse(w, Err{Msg: "Secret does not match slug"}, http.StatusBadRequest)
 		return
 	}
 
 	err = removeSlug(api.Slug)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		JSONResponse(w, Err{Msg: "Error occurred while removing slug"}, http.StatusBadRequest)
 		return
 	}
@@ -175,7 +176,7 @@ func reroute(w http.ResponseWriter, r *http.Request) {
 	full, err := getFullUrl(slug)
 
 	if err != nil {
-		log.Print("Redirect cannot be attempted")
+		log.Println("Redirect cannot be attempted")
 		http.Redirect(w, r, "https://itybity.xyz", http.StatusNotFound)
 		return
 	}
@@ -212,7 +213,7 @@ func removeSlug(slug string) error {
 }
 
 func slugExists(slug string) bool {
-	log.Print(slug)
+	log.Println(slug)
 	filter := bson.D{{"slug", slug}}
 	result := db.FindOne(context.Background(), filter)
 
