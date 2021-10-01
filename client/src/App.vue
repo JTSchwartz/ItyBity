@@ -233,7 +233,7 @@
 		}),
 		computed:   {
 			host: function () {
-				return `${(process.env.NODE_ENV === "development") ? "http://127.0.0.1" : "https://itybity.xyz"}:7070`
+				return (process.env.NODE_ENV === "development") ? "http://127.0.0.1:7070" : "https://itybity.xyz"
 			}
 		},
 		methods:    {
