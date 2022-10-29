@@ -23,5 +23,11 @@ export default new Vuetify({
   },
   icons: {
     iconfont: 'fa',
+    defaultAssets: false,
+    values: {
+      checkboxOn: "fa-regular fa-square-check",
+      checkboxOff: "fa-regular fa-square",
+      checkboxIndeterminate: "fa-regular fa-square-minus",
+    }
   },
 });

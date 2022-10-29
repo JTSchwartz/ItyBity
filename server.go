@@ -1,4 +1,4 @@
-package main
+package ityBity
 
 import (
 	"context"
@@ -25,8 +25,9 @@ var (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Failed to load .env file")
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file, ignore if running in production")
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -42,13 +43,14 @@ func main() {
 	db = client.Database("ityBity").Collection("shortUrls")
 	router := mux.NewRouter()
 
+	router.Path("/robots.txt").Handler(http.FileServer(http.Dir("./client/dist")))
 	router.HandleFunc("/{slug}", reroute).Methods("GET")
 	router.HandleFunc("/change", change).Methods("POST")
 	router.HandleFunc("/create", create).Methods("POST")
 	router.HandleFunc("/remove", remove).Methods("POST")
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./client/dist")))
 
-	serverAddress := ":7070"
+	serverAddress := ":8080"
 	log.Println("starting server at", serverAddress)
 	log.Fatal(http.ListenAndServe(serverAddress, router))
 }

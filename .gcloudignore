@@ -1,0 +1,13 @@
+# local env files
+.env
+.env.local
+.env.*.local
+
+# Log files
+/client/.idea
+/client/node_modules
+/client/npm-debug.log*
+/client/public
+/client/src
+babel.config.js
+package*.json

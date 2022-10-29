@@ -1,0 +1,9 @@
+steps:
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      args:
+          - gcloud
+          - run
+          - deploy
+          - itybity
+          - --source .
+      id: 'Deploy'
