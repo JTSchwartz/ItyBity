@@ -1,4 +1,4 @@
-package ityBity
+package main
 
 import (
 	"context"
